@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MrWebSA | Home</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-RXf+QSDCUQs6v1R1RgcdrP+Jn6HsUex63PfABZFt9M+M6vWcHhFeWJZ9smRkz70dJ2wNIlcX9Jdlhq1Q4MWY2g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Fixed Font Awesome link: removed integrity and crossorigin -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" referrerpolicy="no-referrer" />
   <style>
     html {
       scroll-behavior: smooth;
@@ -209,19 +210,25 @@
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  </script>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    (function () {
+      emailjs.init("30h8JuXMGgur89XEU");
+    })();
 
     document.getElementById("contactForm").addEventListener("submit", function (e) {
       e.preventDefault();
-      const name = document.getElementById("name").value;
-      const surname = document.getElementById("surname").value;
-      const email = document.getElementById("email").value;
-      const message = document.getElementById("message").value;
 
-      const subject = `New message from ${name} ${surname}`;
-      const body = `Name: ${name} %0D%0ASurname: ${surname} %0D%0AEmail: ${email} %0D%0A%0D%0A${message}`;
-      const mailtoLink = `mailto:MrWebSA@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
-
-      window.location.href = mailtoLink;
+      emailjs.sendForm("service_5ff8iao", "template_nada38a", this)
+        .then(function (response) {
+          alert("✅ Message sent successfully!");
+          document.getElementById("contactForm").reset();
+        }, function (error) {
+          alert("❌ Failed to send. Please try again.\n" + JSON.stringify(error));
+        });
     });
   </script>
 
