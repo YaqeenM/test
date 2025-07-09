@@ -22,10 +22,38 @@
     <h2>Let's Talk</h2>
     <p>Email: <a href="mailto:yaqeen1094@gmail.com">yaqeen1094@gmail.com</a></p>
     <p>Phone/WhatsApp: <a href="tel:+27660912240">+27 660 912 240</a></p>
+
+    <!-- Contact Form -->
+    <h3>Send me a message</h3>
+    <form id="contact-form">
+      <input type="text" name="name" placeholder="Your name" required />
+      <input type="email" name="email" placeholder="Your email" required />
+      <textarea name="message" placeholder="Your message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
   </section>
 
   <footer>
     <p>&copy; 2025 IDK. All rights reserved.</p>
   </footer>
+
+  <!-- EmailJS Script -->
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    (function () {
+      emailjs.init("30h8JuXMGgur89XEU");
+    })();
+
+    document.getElementById("contact-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      emailjs.sendForm("service_5ff8iao", "template_nada38a", this)
+        .then(function (response) {
+          alert("✅ Message sent successfully!");
+        }, function (error) {
+          alert("❌ Failed to send. Please try again.\n" + JSON.stringify(error));
+        });
+    });
+  </script>
 </body>
 </html>
