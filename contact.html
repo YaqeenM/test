@@ -58,7 +58,7 @@
   <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <script>
     (function () {
-      emailjs.init("30h8JuXMGgur89XEU"); // Your public key
+      emailjs.init("30h8JuXMGgur89XEU"); // Your EmailJS Public Key
     })();
 
     const form = document.getElementById("contactForm");
@@ -74,19 +74,19 @@
         message: form.message.value,
       };
 
-      // Step 1: Send to you
+      // Step 1: Send email to business
       emailjs.sendForm("service_5ff8iao", "template_nada38a", form)
         .then(() => {
-          // Step 2: Send confirmation to client
+          // Step 2: Send confirmation email to client
           return emailjs.send("service_5ff8iao", "template_haw6y3d", formData);
         })
         .then(() => {
-          statusMessage.textContent = "✅ Message sent! Confirmation email sent to you.";
+          statusMessage.textContent = "✅ Message sent! Confirmation email sent to your inbox.";
           statusMessage.style.color = "green";
           form.reset();
         })
         .catch((error) => {
-          statusMessage.textContent = "❌ Failed to send message or confirmation.";
+          statusMessage.textContent = "❌ Failed to send message or confirmation. Please try again.";
           statusMessage.style.color = "red";
           console.error("EmailJS error:", error);
         });
