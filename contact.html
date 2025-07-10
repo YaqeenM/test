@@ -67,37 +67,28 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      // 1. Send email to you
-      emailjs
-        .sendForm("service_5ff8iao", "template_nada38a", this)
+      const formData = {
+        name: form.name.value,
+        surname: form.surname.value,
+        email: form.email.value,
+        message: form.message.value,
+      };
+
+      // Step 1: Send to you
+      emailjs.sendForm("service_5ff8iao", "template_nada38a", form)
         .then(() => {
-          // 2. Send confirmation to client
-          emailjs
-            .send("service_5ff8iao", "template_haw6y3d", {
-              name: form.name.value,
-              surname: form.surname.value,
-              email: form.email.value,
-              message: form.message.value,
-            })
-            .then(() => {
-              statusMessage.textContent =
-                "✅ Message sent! Confirmation email sent to you.";
-              statusMessage.style.color = "green";
-              form.reset();
-            })
-            .catch((error) => {
-              statusMessage.textContent =
-                "⚠️ Message sent, but confirmation email failed.";
-              statusMessage.style.color = "orange";
-              console.error("Confirmation email error:", error);
-              form.reset();
-            });
+          // Step 2: Send confirmation to client
+          return emailjs.send("service_5ff8iao", "template_haw6y3d", formData);
+        })
+        .then(() => {
+          statusMessage.textContent = "✅ Message sent! Confirmation email sent to you.";
+          statusMessage.style.color = "green";
+          form.reset();
         })
         .catch((error) => {
-          statusMessage.textContent =
-            "❌ Failed to send message. Please try again.";
+          statusMessage.textContent = "❌ Failed to send message or confirmation.";
           statusMessage.style.color = "red";
-          console.error("Business email error:", error);
+          console.error("EmailJS error:", error);
         });
     });
   </script>
