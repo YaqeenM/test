@@ -174,7 +174,7 @@
       emailjs.sendForm("service_5ff8iao", "template_nada38a", form)
         .then(function () {
           // 2. Send auto-reply to client
-          emailjs.send("service_5ff8iao", "template_haw6y3d", {
+          emailjs.sendForm("service_5ff8iao", "template_haw6y3d", {
             name: document.getElementById("name").value,
             surname: document.getElementById("surname").value,
             email: document.getElementById("email").value,
