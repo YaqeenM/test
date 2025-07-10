@@ -1,97 +1,154 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MrWebSA | Contact</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-</head>
-<body>
+<section id="contact" class="contact">
+  <h2><i class="fas fa-envelope"></i>Contact Me</h2>
 
-  <header>
-    <h1>Contact Me</h1>
-  </header>
+  <form id="contactForm">
+    <label for="name">Name:</label><br />
+    <input type="text" id="name" name="name" required /><br /><br />
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="services.html">Services</a>
-    <a href="contact.html">Contact</a>
-  </nav>
+    <label for="surname">Surname:</label><br />
+    <input type="text" id="surname" name="surname" required /><br /><br />
 
-  <section id="contact" class="contact">
-    <h2><i class="fas fa-envelope"></i>Contact Me</h2>
+    <label for="email">Your Email:</label><br />
+    <input type="email" id="email" name="email" required /><br /><br />
 
-    <form id="contactForm">
-      <label for="name">Name:</label><br />
-      <input type="text" id="name" name="name" required /><br /><br />
+    <label for="message">Message:</label><br />
+    <textarea id="message" name="message" rows="5" required></textarea><br /><br />
 
-      <label for="surname">Surname:</label><br />
-      <input type="text" id="surname" name="surname" required /><br /><br />
+    <button type="submit">Send</button>
+  </form>
 
-      <label for="email">Your Email:</label><br />
-      <input type="email" id="email" name="email" required /><br /><br />
+  <p>
+    Or email me directly:
+    <a href="mailto:MrWebSA@gmail.com?subject=Website%20Enquiry">MrWebSA@gmail.com</a>
+  </p>
+  <p>
+    Phone/WhatsApp: <a href="tel:+27660912240">+27 660 912 240</a>
+  </p>
 
-      <label for="message">Message:</label><br />
-      <textarea id="message" name="message" rows="5" required></textarea><br /><br />
+  <div id="status-message" style="margin-top: 15px; font-weight: bold; text-align: center"></div>
+</section>
 
-      <button type="submit">Send</button>
-    </form>
+<!-- Include EmailJS SDK once at the bottom of your page -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  (function () {
+    emailjs.init("30h8JuXMGgur89XEU"); // Your EmailJS public key
+  })();
 
-    <p>
-      Or email me directly:
-      <a href="mailto:MrWebSA@gmail.com?subject=Website%20Enquiry">MrWebSA@gmail.com</a>
-    </p>
-    <p>
-      Phone/WhatsApp: <a href="tel:+27660912240">+27 660 912 240</a>
-    </p>
+  const form = document.getElementById("contactForm");
+  const statusMessage = document.getElementById("status-message");
 
-    <div id="status-message" style="margin-top: 15px; font-weight: bold; text-align: center"></div>
-  </section>
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-  <footer>
-    <p>&copy; 2025 MrWebSA. All rights reserved.</p>
-  </footer>
+    // Send email to business first
+    emailjs
+      .sendForm("service_5ff8iao", "template_nada38a", this)
+      .then(() => {
+        // Then send confirmation email to client
+        emailjs
+          .send("service_5ff8iao", "template_haw6y3d", {
+            name: form.name.value,
+            surname: form.surname.value,
+            email: form.email.value,
+            message: form.message.value,
+          })
+          .then(() => {
+            statusMessage.textContent =
+              "✅ Message sent! Confirmation email sent to you.";
+            statusMessage.style.color = "green";
+            form.reset();
+          })
+          .catch((error) => {
+            statusMessage.textContent =
+              "⚠️ Message sent, but confirmation email failed.";
+            statusMessage.style.color = "orange";
+            console.error("Confirmation email error:", error);
+            form.reset();
+          });
+      })
+      .catch((error) => {
+        statusMessage.textContent =
+          "❌ Failed to send message. Please try again.";
+        statusMessage.style.color = "red";
+        console.error("Business email error:", error);
+      });
+  });
+</script>
+<section id="contact" class="contact">
+  <h2><i class="fas fa-envelope"></i>Contact Me</h2>
 
-  <!-- EmailJS Script -->
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script>
-    (function () {
-      emailjs.init("30h8JuXMGgur89XEU"); // Your EmailJS Public Key
-    })();
+  <form id="contactForm">
+    <label for="name">Name:</label><br />
+    <input type="text" id="name" name="name" required /><br /><br />
 
-    const form = document.getElementById("contactForm");
-    const statusMessage = document.getElementById("status-message");
+    <label for="surname">Surname:</label><br />
+    <input type="text" id="surname" name="surname" required /><br /><br />
 
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
+    <label for="email">Your Email:</label><br />
+    <input type="email" id="email" name="email" required /><br /><br />
 
-      const formData = {
-        name: form.name.value,
-        surname: form.surname.value,
-        email: form.email.value,
-        message: form.message.value,
-      };
+    <label for="message">Message:</label><br />
+    <textarea id="message" name="message" rows="5" required></textarea><br /><br />
 
-      // Step 1: Send email to business
-      emailjs.sendForm("service_5ff8iao", "template_nada38a", form)
-        .then(() => {
-          // Step 2: Send confirmation email to client
-          return emailjs.send("service_5ff8iao", "template_haw6y3d", formData);
-        })
-        .then(() => {
-          statusMessage.textContent = "✅ Message sent! Confirmation email sent to your inbox.";
-          statusMessage.style.color = "green";
-          form.reset();
-        })
-        .catch((error) => {
-          statusMessage.textContent = "❌ Failed to send message or confirmation. Please try again.";
-          statusMessage.style.color = "red";
-          console.error("EmailJS error:", error);
-        });
-    });
-  </script>
+    <button type="submit">Send</button>
+  </form>
 
-</body>
-</html>
+  <p>
+    Or email me directly:
+    <a href="mailto:MrWebSA@gmail.com?subject=Website%20Enquiry">MrWebSA@gmail.com</a>
+  </p>
+  <p>
+    Phone/WhatsApp: <a href="tel:+27660912240">+27 660 912 240</a>
+  </p>
+
+  <div id="status-message" style="margin-top: 15px; font-weight: bold; text-align: center"></div>
+</section>
+
+<!-- Include EmailJS SDK once at the bottom of your page -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  (function () {
+    emailjs.init("30h8JuXMGgur89XEU"); // Your EmailJS public key
+  })();
+
+  const form = document.getElementById("contactForm");
+  const statusMessage = document.getElementById("status-message");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // Send email to business first
+    emailjs
+      .sendForm("service_5ff8iao", "template_nada38a", this)
+      .then(() => {
+        // Then send confirmation email to client
+        emailjs
+          .send("service_5ff8iao", "template_haw6y3d", {
+            name: form.name.value,
+            surname: form.surname.value,
+            email: form.email.value,
+            message: form.message.value,
+          })
+          .then(() => {
+            statusMessage.textContent =
+              "✅ Message sent! Confirmation email sent to you.";
+            statusMessage.style.color = "green";
+            form.reset();
+          })
+          .catch((error) => {
+            statusMessage.textContent =
+              "⚠️ Message sent, but confirmation email failed.";
+            statusMessage.style.color = "orange";
+            console.error("Confirmation email error:", error);
+            form.reset();
+          });
+      })
+      .catch((error) => {
+        statusMessage.textContent =
+          "❌ Failed to send message. Please try again.";
+        statusMessage.style.color = "red";
+        console.error("Business email error:", error);
+      });
+  });
+</script>
