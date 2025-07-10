@@ -124,7 +124,7 @@
       .then(() => {
         // Then send confirmation email to client
         emailjs
-          .send("service_5ff8iao", "template_haw6y3d", {
+          .sendForm("service_5ff8iao", "template_haw6y3d", {
             name: form.name.value,
             surname: form.surname.value,
             email: form.email.value,
