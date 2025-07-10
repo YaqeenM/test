@@ -158,9 +158,11 @@
     }
   </script>
 
-  <!-- EmailJS Scripts -->
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script>
+   EmailJS Scripts
+ <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
+   
+ </script>
+
     (function () {
       emailjs.init("30h8JuXMGgur89XEU");
     })();
@@ -169,10 +171,10 @@
       e.preventDefault();
       const form = this;
 
-      // 1. Send to business (your inbox)
+      
       emailjs.sendForm("service_5ff8iao", "template_nada38a", form)
         .then(() => {
-          // 2. Auto-reply to client
+      
           return emailjs.send("service_5ff8iao", "template_haw6y3d", {
             name: form.name.value,
             surname: form.surname.value,
