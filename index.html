@@ -165,34 +165,28 @@
       emailjs.init("30h8JuXMGgur89XEU");
     })();
 
-    const form = document.getElementById("contactForm");
-
-    form.addEventListener("submit", function (e) {
+    document.getElementById("contactForm").addEventListener("submit", function (e) {
       e.preventDefault();
+      const form = this;
 
-      const name = document.getElementById("name").value;
-      const surname = document.getElementById("surname").value;
-      const email = document.getElementById("email").value;
-      const message = document.getElementById("message").value;
-
-      // First: send email to your business
+      // 1. Send to business (your inbox)
       emailjs.sendForm("service_5ff8iao", "template_nada38a", form)
-        .then(function () {
-          // Then: send confirmation to the client
+        .then(() => {
+          // 2. Auto-reply to client
           return emailjs.send("service_5ff8iao", "template_haw6y3d", {
-            name,
-            surname,
-            email,
-            message
+            name: form.name.value,
+            surname: form.surname.value,
+            email: form.email.value,
+            message: form.message.value
           });
         })
-        .then(function () {
-          alert("✅ Message sent! A confirmation email was also sent to your inbox.");
+        .then(() => {
+          alert("✅ Message sent! We've emailed you a confirmation.");
           form.reset();
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.error("EmailJS Error:", error);
-          alert("❌ Something went wrong. Please try again later.");
+          alert("❌ Something went wrong.\n" + JSON.stringify(error));
         });
     });
   </script>
