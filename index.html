@@ -158,37 +158,33 @@
     }
   </script>
 
-   EmailJS Scripts
- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js">
-   
- </script>
-
+  <!-- EmailJS Scripts -->
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
     (function () {
       emailjs.init("30h8JuXMGgur89XEU");
     })();
 
     document.getElementById("contactForm").addEventListener("submit", function (e) {
       e.preventDefault();
+
       const form = this;
 
-      
+      // 1. Send email to you (MrWebSA)
       emailjs.sendForm("service_5ff8iao", "template_nada38a", form)
-        .then(() => {
-      
-          return emailjs.send("service_5ff8iao", "template_haw6y3d", {
-            name: form.name.value,
-            surname: form.surname.value,
-            email: form.email.value,
-            message: form.message.value
+        .then(function () {
+          // 2. Send auto-reply to client
+          emailjs.send("service_5ff8iao", "template_haw6y3d", {
+            name: document.getElementById("name").value,
+            surname: document.getElementById("surname").value,
+            email: document.getElementById("email").value,
+            message: document.getElementById("message").value
           });
-        })
-        .then(() => {
-          alert("✅ Message sent! We've emailed you a confirmation.");
+
+          alert("✅ Message sent successfully!");
           form.reset();
-        })
-        .catch((error) => {
-          console.error("EmailJS Error:", error);
-          alert("❌ Something went wrong.\n" + JSON.stringify(error));
+        }, function (error) {
+          alert("❌ Failed to send. " + JSON.stringify(error));
         });
     });
   </script>
