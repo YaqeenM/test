@@ -110,7 +110,7 @@
 
   <section id="about">
     <h2><i class="fas fa-user"></i>About Me</h2>
-    <p>I am a professional web developer based in South Africa, passionate about helping individuals and businesses bring their ideas to life through affordable, functional, and creative websites. At MrWebSA, I strive to understand each client’s vision and deliver responsive websites that look great on all devices. My mission is to make quality web development accessible to everyone, no matter their budget.</p>
+    <p>I am a professional web developer based in South Africa, passionate about helping individuals and businesses bring their ideas to life through affordable, functional, and creative websites. At MrWebSA, I strive to understand each client's vision and deliver responsive websites that look great on all devices. My mission is to make quality web development accessible to everyone, no matter their budget.</p>
   </section>
 
   <div class="techy-divider">Responsive for All Devices</div>
@@ -196,20 +196,24 @@
         
         try {
           // 1. Send to business (MrWebSA)
-          await emailjs.sendForm("service_5ff8iao", "template_nada38a", form);
-          
-          // 2. Send auto-reply to client
-          await emailjs.send("service_5ff8iao", "template_haw6y3d", {
+          await emailjs.send("service_5ff8iao", "template_928idxb", {
             name: form.name.value,
             surname: form.surname.value,
             email: form.email.value,
             message: form.message.value
           });
           
-          // Success message
-          statusEl.textContent = "✅ Message sent successfully! Confirmation sent to your email.";
+          // 2. Send auto-reply to client
+          await emailjs.send("service_5ff8iao", "template_w9su9od", {
+            name: form.name.value,
+            surname: form.surname.value,
+            email: form.email.value,
+            message: form.message.value
+          });
+          
+          // Success message (NO FORM RESET)
+          statusEl.textContent = "✅ Message sent successfully!";
           statusEl.className = "success";
-          form.reset();
           
         } catch (error) {
           console.error("Email error:", error);
