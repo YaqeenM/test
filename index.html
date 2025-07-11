@@ -66,37 +66,24 @@
       to { transform: translateX(-50%); }
     }
     ul { padding-left: 1.5rem; }
+    #contactForm button:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+    }
+    #status-message {
+      margin: 15px 0;
+      padding: 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .success { color: green; }
+    .warning { color: orange; }
     @media screen and (max-width: 600px) {
       nav a { display: block; margin: 10px 0; }
       section { padding: 1rem; }
       .techy-divider { font-size: 1.2rem; height: auto; padding: 2rem 1rem; }
       ul { padding-left: 1rem; }
-    }
-    /* Form Styles */
-    #contactForm input, #contactForm textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 16px;
-    }
-    #contactForm button {
-      background-color: #003366;
-      color: white;
-      padding: 12px 25px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s;
-    }
-    #contactForm button:hover {
-      background-color: #001f3f;
-    }
-    #contactForm button:disabled {
-      background-color: #cccccc;
-      cursor: not-allowed;
     }
   </style>
 </head>
@@ -123,7 +110,7 @@
 
   <section id="about">
     <h2><i class="fas fa-user"></i>About Me</h2>
-    <p>I am a professional web developer based in South Africa, passionate about helping individuals and businesses bring their ideas to life through affordable, functional, and creative websites. At MrWebSA, I strive to understand each client's vision and deliver responsive websites that look great on all devices. My mission is to make quality web development accessible to everyone, no matter their budget.</p>
+    <p>I am a professional web developer based in South Africa, passionate about helping individuals and businesses bring their ideas to life through affordable, functional, and creative websites. At MrWebSA, I strive to understand each client’s vision and deliver responsive websites that look great on all devices. My mission is to make quality web development accessible to everyone, no matter their budget.</p>
   </section>
 
   <div class="techy-divider">Responsive for All Devices</div>
@@ -157,6 +144,8 @@
       <button type="submit" id="submitBtn">Send</button>
     </form>
 
+    <div id="status-message"></div>
+
     <p>Or email me directly: 
       <a href="mailto:MrWebSA@gmail.com?subject=Website%20Enquiry">MrWebSA@gmail.com</a>
     </p>
@@ -170,7 +159,7 @@
   <button onclick="scrollToTop()" id="scrollTopBtn">↑</button>
 
   <script>
-    // Scroll to top functionality
+    // Scroll to top function
     const scrollBtn = document.getElementById("scrollTopBtn");
     window.onscroll = function () {
       if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
@@ -183,49 +172,55 @@
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+  </script>
 
-    // EmailJS Integration
+  <!-- EmailJS Integration -->
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
     (function() {
+      // Initialize EmailJS
       emailjs.init("30h8JuXMGgur89XEU");
       
-      const contactForm = document.getElementById("contactForm");
+      const form = document.getElementById("contactForm");
       const submitBtn = document.getElementById("submitBtn");
+      const statusEl = document.getElementById("status-message");
       
-      contactForm.addEventListener("submit", function(e) {
+      form.addEventListener("submit", async function(e) {
         e.preventDefault();
         
-        // Disable button during submission
+        // Disable button during send
         submitBtn.disabled = true;
         submitBtn.textContent = "Sending...";
+        statusEl.textContent = "";
+        statusEl.className = "";
         
-        // Send business notification to MrWebSA
-        emailjs.sendForm("service_5ff8iao", "template_928idxb", contactForm)
-          .then(function() {
-            // Send auto-reply to client
-            return emailjs.send("service_5ff8iao", "template_w9su9od", {
-              name: document.getElementById("name").value,
-              surname: document.getElementById("surname").value,
-              email: document.getElementById("email").value,
-              message: document.getElementById("message").value
-            });
-          })
-          .then(function() {
-            alert("✅ Message sent successfully! You'll receive a confirmation email shortly.");
-            contactForm.reset();
-          })
-          .catch(function(error) {
-            alert("⚠️ Message received! (We'll contact you soon)");
-            console.error("Email error:", error);
-          })
-          .finally(function() {
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Send";
+        try {
+          // 1. Send to business (MrWebSA)
+          await emailjs.sendForm("service_5ff8iao", "template_nada38a", form);
+          
+          // 2. Send auto-reply to client
+          await emailjs.send("service_5ff8iao", "template_haw6y3d", {
+            name: form.name.value,
+            surname: form.surname.value,
+            email: form.email.value,
+            message: form.message.value
           });
+          
+          // Success message
+          statusEl.textContent = "✅ Message sent successfully! Confirmation sent to your email.";
+          statusEl.className = "success";
+          form.reset();
+          
+        } catch (error) {
+          console.error("Email error:", error);
+          statusEl.textContent = "⚠️ Message received! (We'll contact you soon)";
+          statusEl.className = "warning";
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Send";
+        }
       });
     })();
   </script>
-
-  <!-- EmailJS SDK -->
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 </body>
 </html>
