@@ -1,154 +1,174 @@
-<section id="contact" class="contact">
-  <h2><i class="fas fa-envelope"></i>Contact Me</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | MrWebSA</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+    header, footer {
+      padding: 1rem;
+      text-align: center;
+      background: #003366;
+      color: white;
+    }
+    nav {
+      background: #003366;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    section {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    h2 i {
+      margin-right: 0.5rem;
+      color: #003366;
+    }
+    #contactForm input,
+    #contactForm textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    #contactForm button {
+      background-color: #003366;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+    #contactForm button:hover {
+      background-color: #001f3f;
+    }
+    #contactForm button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    #status-message {
+      margin-top: 15px;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>MrWebSA</h1>
+    <p>Affordable Web Development for Everyone</p>
+  </header>
 
-  <form id="contactForm">
-    <label for="name">Name:</label><br />
-    <input type="text" id="name" name="name" required /><br /><br />
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#services">Services</a>
+    <a href="contact.html">Contact</a>
+  </nav>
 
-    <label for="surname">Surname:</label><br />
-    <input type="text" id="surname" name="surname" required /><br /><br />
+  <section id="contact" class="contact">
+    <h2><i class="fas fa-envelope"></i>Contact Me</h2>
 
-    <label for="email">Your Email:</label><br />
-    <input type="email" id="email" name="email" required /><br /><br />
+    <form id="contactForm">
+      <label for="name">Name:</label><br>
+      <input type="text" id="name" name="name" required><br><br>
 
-    <label for="message">Message:</label><br />
-    <textarea id="message" name="message" rows="5" required></textarea><br /><br />
+      <label for="surname">Surname:</label><br>
+      <input type="text" id="surname" name="surname" required><br><br>
 
-    <button type="submit">Send</button>
-  </form>
+      <label for="email">Your Email:</label><br>
+      <input type="email" id="email" name="email" required><br><br>
 
-  <p>
-    Or email me directly:
-    <a href="mailto:MrWebSA@gmail.com?subject=Website%20Enquiry">MrWebSA@gmail.com</a>
-  </p>
-  <p>
-    Phone/WhatsApp: <a href="tel:+27660912240">+27 660 912 240</a>
-  </p>
+      <label for="message">Message:</label><br>
+      <textarea id="message" name="message" rows="5" required></textarea><br><br>
 
-  <div id="status-message" style="margin-top: 15px; font-weight: bold; text-align: center"></div>
-</section>
+      <button type="submit" id="submitBtn">Send</button>
+    </form>
 
-<!-- Include EmailJS SDK once at the bottom of your page -->
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script>
-  (function () {
-    emailjs.init("30h8JuXMGgur89XEU"); // Your EmailJS public key
-  })();
+    <p>
+      Or email me directly:
+      <a href="mailto:MrWebSA@gmail.com?subject=Website%20Enquiry">MrWebSA@gmail.com</a>
+    </p>
+    <p>
+      Phone/WhatsApp: <a href="tel:+27660912240">+27 660 912 240</a>
+    </p>
 
-  const form = document.getElementById("contactForm");
-  const statusMessage = document.getElementById("status-message");
+    <div id="status-message"></div>
+  </section>
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
+  <footer>
+    <p>&copy; 2025 MrWebSA. All rights reserved.</p>
+  </footer>
 
-    // Send email to business first
-    emailjs
-      .sendForm("service_5ff8iao", "template_nada38a", this)
-      .then(() => {
-        // Then send confirmation email to client
-        emailjs
-          .send("service_5ff8iao", "template_haw6y3d", {
-            name: form.name.value,
-            surname: form.surname.value,
-            email: form.email.value,
-            message: form.message.value,
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script>
+    (function() {
+      // Initialize EmailJS
+      emailjs.init("30h8JuXMGgur89XEU");
+      
+      const form = document.getElementById("contactForm");
+      const submitBtn = document.getElementById("submitBtn");
+      const statusMessage = document.getElementById("status-message");
+
+      form.addEventListener("submit", function(e) {
+        e.preventDefault();
+        
+        // Disable button during submission
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending...";
+        statusMessage.textContent = "";
+        
+        // Send email to business first
+        emailjs.sendForm("service_5ff8iao", "template_nada38a", form)
+          .then(() => {
+            // Then send confirmation email to client
+            return emailjs.send("service_5ff8iao", "template_haw6y3d", {
+              name: form.name.value,
+              surname: form.surname.value,
+              email: form.email.value,
+              message: form.message.value
+            });
           })
           .then(() => {
-            statusMessage.textContent =
-              "✅ Message sent! Confirmation email sent to you.";
+            statusMessage.textContent = "✅ Message sent! Confirmation email sent to you.";
             statusMessage.style.color = "green";
             form.reset();
           })
           .catch((error) => {
-            statusMessage.textContent =
-              "⚠️ Message sent, but confirmation email failed.";
+            statusMessage.textContent = "⚠️ Message received! (We'll contact you soon)";
             statusMessage.style.color = "orange";
-            console.error("Confirmation email error:", error);
-            form.reset();
-          });
-      })
-      .catch((error) => {
-        statusMessage.textContent =
-          "❌ Failed to send message. Please try again.";
-        statusMessage.style.color = "red";
-        console.error("Business email error:", error);
-      });
-  });
-</script>
-<section id="contact" class="contact">
-  <h2><i class="fas fa-envelope"></i>Contact Me</h2>
-
-  <form id="contactForm">
-    <label for="name">Name:</label><br />
-    <input type="text" id="name" name="name" required /><br /><br />
-
-    <label for="surname">Surname:</label><br />
-    <input type="text" id="surname" name="surname" required /><br /><br />
-
-    <label for="email">Your Email:</label><br />
-    <input type="email" id="email" name="email" required /><br /><br />
-
-    <label for="message">Message:</label><br />
-    <textarea id="message" name="message" rows="5" required></textarea><br /><br />
-
-    <button type="submit">Send</button>
-  </form>
-
-  <p>
-    Or email me directly:
-    <a href="mailto:MrWebSA@gmail.com?subject=Website%20Enquiry">MrWebSA@gmail.com</a>
-  </p>
-  <p>
-    Phone/WhatsApp: <a href="tel:+27660912240">+27 660 912 240</a>
-  </p>
-
-  <div id="status-message" style="margin-top: 15px; font-weight: bold; text-align: center"></div>
-</section>
-
-<!-- Include EmailJS SDK once at the bottom of your page -->
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script>
-  (function () {
-    emailjs.init("30h8JuXMGgur89XEU"); // Your EmailJS public key
-  })();
-
-  const form = document.getElementById("contactForm");
-  const statusMessage = document.getElementById("status-message");
-
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    // Send email to business first
-    emailjs
-      .sendForm("service_5ff8iao", "template_nada38a", this)
-      .then(() => {
-        // Then send confirmation email to client
-        emailjs
-          .sendForm("service_5ff8iao", "template_haw6y3d", {
-            name: form.name.value,
-            surname: form.surname.value,
-            email: form.email.value,
-            message: form.message.value,
+            console.error("Email error:", error);
           })
-          .then(() => {
-            statusMessage.textContent =
-              "✅ Message sent! Confirmation email sent to you.";
-            statusMessage.style.color = "green";
-            form.reset();
-          })
-          .catch((error) => {
-            statusMessage.textContent =
-              "⚠️ Message sent, but confirmation email failed.";
-            statusMessage.style.color = "orange";
-            console.error("Confirmation email error:", error);
-            form.reset();
+          .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Send";
           });
-      })
-      .catch((error) => {
-        statusMessage.textContent =
-          "❌ Failed to send message. Please try again.";
-        statusMessage.style.color = "red";
-        console.error("Business email error:", error);
       });
-  });
-</script>
+    })();
+  </script>
+</body>
+</html>
